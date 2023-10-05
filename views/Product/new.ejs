@@ -1,0 +1,23 @@
+<% layout('layouts/boilerplate')%>
+<div>
+    <h1>Create a New Product</h1>
+    <form action="/product" method="post">
+        <div>
+            <label for="name">Name of Product: </label>
+            <input type="text" name="product[name]" id="name">
+        </div>
+        <div>
+            <label for="price">Price of Product: </label>
+            <input type="number" name="product[price]" id="price">
+        </div>
+        <div>
+            <label for="description">Description of Product: </label>
+            <input type="text" name="product[description]" id="description">
+        </div>
+        <div>
+            <label for="description">Description of Product: </label>
+            <input type="text" name="product[description]" id="description">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
