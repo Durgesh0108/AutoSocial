@@ -7,7 +7,7 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-// const MongoDBStore = require("connect-mongo")(session);
+const ExpressError = require('./utils/ExpressError');
 
 // const Product = require("./models/productModel");
 const productRouter = require("./routes/productRoute");
@@ -75,9 +75,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
+	next();
 });
+
 app.get("/cat", (req, res) => {
 	res.send("cat");
 });
@@ -89,14 +92,14 @@ app.get("/", (req, res) => {
 	res.render("home");
 });
 
-app.all("*", (req, res, next) => {
-	next(new ExpressError("Page Not Found", 404));
-});
-
 app.use((err, req, res, next) => {
 	const { statusCode = 500 } = err;
 	if (!err.message) err.message = "Oh No, Something Went Wrong!";
 	res.status(statusCode).render("error", { err });
+});
+
+app.all("*", (req, res, next) => {
+	next(new ExpressError("Page Not Found", 404));
 });
 
 const port = process.env.PORT || 3000;
